@@ -3,7 +3,8 @@ import {
   CssBaseline,
   Container
 } from '@mui/material'
-import QuizCard from 'components/QuizCard/QuizCard'
+// import QuizCard from 'components/QuizCard/QuizCard'
+import QuizForm from 'components/QuizForm/QuizForm'
 import store from 'store'
 import { Provider } from 'react-redux'
 
@@ -12,7 +13,7 @@ function App() {
     <Provider store={store}>
       <CssBaseline />
       <Container maxWidth="md" sx={{ py: 5, bgcolor: '#E4E8F5', height: '100vh' }}>
-        <QuizCard />
+        <QuizForm />
       </Container>
     </Provider>
   );
