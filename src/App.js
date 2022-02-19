@@ -15,9 +15,9 @@ function App() {
     <Provider store={store}>
       <CssBaseline />
       <Container maxWidth="md" sx={{ py: 5, bgcolor: '#E4E8F5', height: '100vh' }}>
-        {/* <QuizCard />
-        <QuizForm /> */}
-        <QuestionCard />
+        {/* <QuizCard /> */}
+        {/* <QuizForm /> */}
+        {/* <QuestionCard /> */}
         <QuestionForm />
       </Container>
     </Provider>

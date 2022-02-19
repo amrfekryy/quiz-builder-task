@@ -9,7 +9,7 @@ import {
 } from '@mui/material'
 import { useFormik } from 'formik'
 import AddIcon from '@mui/icons-material/Add';
-
+import MyIcon from 'components/MyIcon/MyIcon';
 
 const fields1 = [
   { name: 'text', label: 'Question', required: true },
@@ -39,20 +39,6 @@ function QuizCard() {
     },
   });
 
-  // const {
-  //   handleChange: handleAnswerChange,
-  //   handleSubmit: handleAnswersSubmit,
-  //   values: answersValues
-  // } = useFormik({
-  //   initialValues: {
-  //     answer1: "",
-  //     answer2: "",
-  //   },
-  //   onSubmit: values => {
-  //     alert(JSON.stringify(values, null, 2));
-  //   },
-  // });
-
   return (
     <Paper elevation={0} sx={{ p: 2, m: 2 }}>
       <Stack spacing={2}>
@@ -75,13 +61,13 @@ function QuizCard() {
         {
           answers.map(answer => {
             return (
-              <Stack direction="row" flex={1}>
-                <Checkbox
+              <Stack direction="row" alignItems="center" spacing={1}>
+                {/* <Checkbox
                   size='small'
                 // checked={checked}
                 // onChange={handleChange}
                 // inputProps={{ 'aria-label': 'controlled' }}
-                />
+                /> */}
                 <TextField
                   fullWidth
                   variant="outlined"
@@ -90,12 +76,21 @@ function QuizCard() {
                   onChange={handleChange}
                   value={values[answer.name]}
                 />
+                <MyIcon icon="check_circle" tooltip="mark as correct"
+                  sx={{
+                    color: 'success.main', fontSize: 20,
+                    // ':hover': { color: 'success.main' }
+                  }}
+                  onClick={() => { }}
+                />
+                <MyIcon icon="close" tooltip="delete" sx={{ fontSize: 20 }} />
+
               </Stack>
             )
 
           })
         }
-        <Stack direction="row" justifyContent="flex-start" sx={{ pl: 5 }}>
+        <Stack direction="row" justifyContent="flex-start">
           <Button
             variant="outlined" size="small" startIcon={<AddIcon />}
             onClick={() => { }}
