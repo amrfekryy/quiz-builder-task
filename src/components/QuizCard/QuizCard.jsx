@@ -11,20 +11,28 @@ import {
   Paper
 } from '@mui/material'
 import MyIcon from 'components/MyIcon/MyIcon'
-export default function BasicCard() {
+import { useDispatch } from 'react-redux';
+import * as UIActions from 'store/UI.slice'
+
+export default function QuizCard() {
+  const dispatch = useDispatch()
+
   return (
     <Stack direction="row" flexWrap="wrap" >
-      <Paper elevation={1} sx={{ 
-        width: 250, m:2, bgcolor: 'transparent',  
-        '& :hover': { boxShadow: 2}
-      }}>
-        <Stack sx={{height: '100%'}} justifyContent="center" alignItems="center">
+      <Paper elevation={1}
+        sx={{
+          width: 250, m: 2, bgcolor: 'transparent',
+          '& :hover': { boxShadow: 2 }
+        }}
+        onClick={() => dispatch(UIActions.createQuiz())}
+      >
+        <Stack sx={{ height: '100%' }} justifyContent="center" alignItems="center">
           <MyIcon icon='add' tooltip="add quiz" fontSize="large" onClick={() => { }} />
 
         </Stack>
 
       </Paper>
-      <Card sx={{ width: 250, m:2 }}>
+      <Card sx={{ width: 250, m: 2 }}>
         <CardContent>
           <Stack direction="row" alignItems="center">
             <Typography variant="h6" component="div">
@@ -36,8 +44,8 @@ export default function BasicCard() {
             </Stack>
           </Stack>
           <Typography sx={{ mt: 1.5 }} color="text.secondary"
-            // variant="body2"
-            // align='center'
+          // variant="body2"
+          // align='center'
           >
             Descriptiondfds ffffffff fffffff fffffffff f fffffffffff ffffffffffffffffffffff
           </Typography>
