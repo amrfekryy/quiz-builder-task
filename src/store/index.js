@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
-import quizesReducer from './UI.slice'
+import UIReducer from './UI.slice'
+import quizesReducer from './quizesReducer.slice'
 
 // import createSagaMiddleware from 'redux-saga';
 // import rootSaga from './sagas';
@@ -8,10 +9,11 @@ import quizesReducer from './UI.slice'
 
 const store = configureStore({
   reducer: {
+    UI: UIReducer,
     quizes: quizesReducer
   },
   // middleware: [sagaMiddleware],
-  devTools: true,
+  // devTools: true,
 });
 
 // sagaMiddleware.run(rootSaga);

@@ -3,24 +3,21 @@ import {
   CssBaseline,
   Container
 } from '@mui/material'
-import QuizCard from 'components/QuizCard/QuizCard'
-import QuizForm from 'components/QuizForm/QuizForm'
-import QuestionForm from 'components/QuestionForm/QuestionForm'
-import QuestionCard from 'components/QuestionCard/QuestionCard'
-import store from 'store'
-import { Provider } from 'react-redux'
+
+import { useSelector } from 'react-redux'
+import Main from 'pages/main'
+import Quiz from 'pages/quiz'
 
 function App() {
+  const { action } = useSelector(state => state.UI)
+
   return (
-    <Provider store={store}>
+    <>
       <CssBaseline />
-      <Container maxWidth="md" sx={{ py: 5, bgcolor: '#E4E8F5', height: '100vh' }}>
-        {/* <QuizCard /> */}
-        {/* <QuizForm /> */}
-        {/* <QuestionCard /> */}
-        <QuestionForm />
+      <Container maxWidth="md" sx={{ py: 5, bgcolor: '#E4E8F5', minHeight: '100vh' }}>
+        {['create', 'update'].includes(action) ? <Quiz /> : <Main />}
       </Container>
-    </Provider>
+    </>
   );
 }
 

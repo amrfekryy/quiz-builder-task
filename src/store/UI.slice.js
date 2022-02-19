@@ -6,6 +6,10 @@ export const resetUI = createAction('UI/resetUI')
 export const createQuiz = createAction('UI/createQuiz')
 export const updateQuiz = createAction('UI/updateQuiz')
 
+export const saveQuizMeta = createAction('UI/saveQuizMeta')
+export const editQuizMeta = createAction('UI/editQuizMeta')
+
+export const saveQuestion = createAction('UI/saveQuestionMeta')
 export const addQuestion = createAction('UI/addQuestion')
 export const editQuestion = createAction('UI/editQuestion')
 export const deleteQuestion = createAction('UI/deleteQuestion')
@@ -64,7 +68,23 @@ export default createReducer(initialState, {
   [updateQuiz]: (state, { payload: quiz }) => {
     return {
       action: 'update',
-      quiz
+      quiz: {...quiz}
+    }
+  },
+  [saveQuizMeta]: (state, { payload }) => {
+    return {
+      ...state,
+      quiz: {
+        ...state.quiz,
+        ...payload 
+      },
+      showQuiz: 'card'
+    }
+  },
+  [editQuizMeta]: (state, { payload }) => {
+    return {
+      ...state,
+      showQuiz: 'form'
     }
   },
 

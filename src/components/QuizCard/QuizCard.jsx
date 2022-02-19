@@ -5,7 +5,7 @@ import {
   Paper
 } from '@mui/material'
 import MyIcon from 'components/MyIcon/MyIcon'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as UIActions from 'store/UI.slice'
 
 export function AddNew() {
@@ -26,25 +26,32 @@ export function AddNew() {
   )
 }
 
-export default function QuizCard({ mini=false }) {
+export default function QuizCard({ mini = false }) {
+
   const dispatch = useDispatch()
+  const { quiz = {} } = useSelector(state => state.UI)
+  const { title = '', description = '', url = '', questions_answers = [] } = quiz
 
   return (
-    <Paper elevation={mini? 1 : 0} sx={{ p: 2, m: 2, ...(mini && {width: 250})}}>
+    <Paper elevation={mini ? 1 : 0} sx={{ p: 2, m: 2, ...(mini && { width: 250 }) }}>
       <Stack direction="row" alignItems="center">
         <Typography variant="h6" component="div">
-          Quiz Title
+          {title}
         </Typography>
         <Stack direction="row" flex={1} justifyContent="flex-end" spacing={1}>
-          <MyIcon icon='ondemand_video' tooltip="watch video" fontSize="small" onClick={() => { }} />
-          <MyIcon icon='edit' tooltip="edit quiz" fontSize="small" onClick={() => { }} />
+          <MyIcon icon='ondemand_video' tooltip="watch video" fontSize="small"
+            onClick={() => window.open(url, '_blank').focus()}
+          />
+          <MyIcon icon='edit' tooltip="edit" fontSize="small"
+            onClick={() => dispatch(UIActions.editQuizMeta())}
+          />
         </Stack>
       </Stack>
       <Typography variant="body1" sx={{ my: 1.5 }} color="text.secondary">
-        Descriptiondfds ffffffff fffffff fffffffff f fffffffffff ffffffffffffffffffffff
+        {description}
       </Typography>
       {mini && <Typography variant="body2">
-        3 questions
+        {questions_answers.length} questions
       </Typography>}
     </Paper>
   );

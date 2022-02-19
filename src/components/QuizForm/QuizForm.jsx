@@ -6,7 +6,8 @@ import {
   Button
 } from '@mui/material'
 import { useFormik } from 'formik'
-
+import { useSelector, useDispatch } from 'react-redux'
+import * as UIActions from 'store/UI.slice'
 
 const fields = [
   { name: 'title', label: 'Title', required: true },
@@ -16,15 +17,13 @@ const fields = [
 
 function QuizForm() {
 
+  const dispatch = useDispatch()
+  const { quiz = {} } = useSelector(state => state.UI)
+  const { title='', description='', url='' } = quiz
+
   const { handleChange, handleSubmit, values } = useFormik({
-    initialValues: {
-      title: '',
-      description: '',
-      url: '',
-    },
-    onSubmit: values => {
-      alert(JSON.stringify(values, null, 2));
-    },
+    initialValues: { title, description, url },
+    onSubmit: values => dispatch(UIActions.saveQuizMeta(values))
   });
 
   return (
@@ -43,7 +42,7 @@ function QuizForm() {
         }
       </Stack>
       <Stack direction="row" justifyContent="flex-end" mt={2}>
-        <Button 
+        <Button
           variant="contained" size="small"
           onClick={handleSubmit}
         >
