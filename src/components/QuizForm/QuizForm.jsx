@@ -28,7 +28,7 @@ function QuizForm() {
   });
 
   return (
-    <Paper elevation={0} sx={{ p: 2 }}>
+    <Paper elevation={0} sx={{ p: 2, m: 2 }}>
       <Stack spacing={2}>
         {
           fields.map(field => {
