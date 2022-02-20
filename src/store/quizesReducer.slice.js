@@ -6,7 +6,7 @@ const initialState = {
   'initial': {
     "created": "2020-09-09 09:26:39",
     "modified": "2020-09-09 09:26:39",
-    "id": 29,
+    "id": "initial",
     "title": "quiz title",
     "description": "Description",
     "score": null,
