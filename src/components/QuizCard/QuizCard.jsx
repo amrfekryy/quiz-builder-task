@@ -14,8 +14,8 @@ export function AddNew() {
   return (
     <Paper elevation={1}
       sx={{
-        width: 250, m: 2, bgcolor: 'transparent',
-        '& :hover': { boxShadow: 2 }
+        width: 250, m: 2, minHeight: 100, bgcolor: 'transparent',
+        ':hover': { boxShadow: 2 }
       }}
       onClick={() => dispatch(UIActions.createQuiz())}
     >
@@ -26,10 +26,10 @@ export function AddNew() {
   )
 }
 
-export default function QuizCard({ mini = false }) {
+export default function QuizCard({ quiz: Quiz, mini = false }) {
 
   const dispatch = useDispatch()
-  const { quiz = {} } = useSelector(state => state.UI)
+  const { quiz = Quiz, editing } = useSelector(state => state.UI)
   const { title = '', description = '', url = '', questions_answers = [] } = quiz
 
   return (
@@ -42,9 +42,11 @@ export default function QuizCard({ mini = false }) {
           <MyIcon icon='ondemand_video' tooltip="watch video" fontSize="small"
             onClick={() => window.open(url, '_blank').focus()}
           />
-          <MyIcon icon='edit' tooltip="edit" fontSize="small"
-            onClick={() => dispatch(UIActions.editQuizMeta())}
-          />
+          {!editing && <MyIcon icon='edit' tooltip="edit" fontSize="small"
+            onClick={() => {
+              dispatch(Quiz ? UIActions.updateQuiz(Quiz) : UIActions.editQuizMeta())
+            }}
+          />}
         </Stack>
       </Stack>
       <Typography variant="body1" sx={{ my: 1.5 }} color="text.secondary">

@@ -10,6 +10,8 @@ import {
 import { useFormik } from 'formik'
 import AddIcon from '@mui/icons-material/Add';
 import MyIcon from 'components/MyIcon/MyIcon';
+import { useDispatch, useSelector } from 'react-redux';
+import * as UIActions from 'store/UI.slice'
 
 const fields1 = [
   { name: 'text', label: 'Question', required: true },
@@ -19,25 +21,41 @@ const fields2 = [
   { name: 'feedback_true', label: 'True Answer Feedback', multiline: true },
 ]
 
-const answers = [
-  { name: 'answer1', label: 'First Answer', required: true, multiline: true },
-  { name: 'answer2', label: 'Another Answer', required: true, multiline: true },
-]
+function QuestionCard({ question, questionIdx }) {
 
-function QuizCard() {
+  const dispatch = useDispatch()
+  const { quiz = {} } = useSelector(state => state.UI)
+  const { questions_answers = [] } = quiz
+  const { text = "", feedback_false = "", feedback_true = "", answers = [] } = question
+
 
   const { handleChange, handleSubmit, values } = useFormik({
     initialValues: {
-      text: "",
-      feedback_false: "",
-      feedback_true: "",
-      answer1: "",
-      answer2: "",
+      text, feedback_false, feedback_true,
+      ...answers.reduce((res, answer, answerIdx) => {
+        return { ...res, [answer.id]: answer.text }
+      }, {})
     },
     onSubmit: values => {
-      alert(JSON.stringify(values, null, 2));
-    },
+
+      const { text, feedback_false, feedback_true, ...answersText } = values
+      // console.log('answersObj', answersObj)
+      const payload = {
+        questionIdx,
+        question: {
+          ...question,
+          text, feedback_false, feedback_true,
+          answers: answers.map(answer => {
+            return { ...answer, text: answersText[answer.id] }
+          })
+        }
+      }
+
+      dispatch(UIActions.saveQuestion(payload))
+    }
   });
+  console.log('question.answers', question.answers)
+  console.log('values', values)
 
   return (
     <Paper elevation={0} sx={{ p: 2, m: 2 }}>
@@ -59,31 +77,36 @@ function QuizCard() {
       </Typography>
       <Stack spacing={2}>
         {
-          answers.map(answer => {
+          answers.map((answer, answerIdx) => {
+
             return (
-              <Stack direction="row" alignItems="center" spacing={1}>
-                {/* <Checkbox
-                  size='small'
-                // checked={checked}
-                // onChange={handleChange}
-                // inputProps={{ 'aria-label': 'controlled' }}
-                /> */}
+              <Stack key={answer.id} direction="row" alignItems="center" spacing={1}>
                 <TextField
                   fullWidth
                   variant="outlined"
                   size="small"
-                  {...answer}
+                  name={answer.id}
+                  label={`Answer ${answerIdx + 1}`}
+                  required
+                  multiline
                   onChange={handleChange}
-                  value={values[answer.name]}
+                  value={values[answer.id]}
                 />
-                <MyIcon icon="check_circle" tooltip="mark as correct"
+                <MyIcon tooltip="mark as correct"
+                  icon={answer.is_true ? "check_circle" : "radio_button_unchecked"}
                   sx={{
                     color: 'success.main', fontSize: 20,
                     // ':hover': { color: 'success.main' }
                   }}
-                  onClick={() => { }}
+                  onClick={() => dispatch(UIActions.markAnswerCorrect({ 
+                    questionId: question.id, answerId: answer.id
+                  }))}
                 />
-                <MyIcon icon="close" tooltip="delete" sx={{ fontSize: 20 }} />
+                {answers.length > 2 && <MyIcon icon="close" tooltip="delete" sx={{ fontSize: 20 }}
+                  onClick={() => dispatch(UIActions.deleteAnswer({ 
+                    questionId: question.id, answerId: answer.id
+                  }))}
+                />}
 
               </Stack>
             )
@@ -93,7 +116,7 @@ function QuizCard() {
         <Stack direction="row" justifyContent="flex-start">
           <Button
             variant="outlined" size="small" startIcon={<AddIcon />}
-            onClick={() => { }}
+            onClick={() => dispatch(UIActions.addAnswer(questionIdx))}
           >
             Add Answer
           </Button>
@@ -126,4 +149,4 @@ function QuizCard() {
   )
 }
 
-export default QuizCard
+export default QuestionCard

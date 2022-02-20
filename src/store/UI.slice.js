@@ -9,7 +9,7 @@ export const updateQuiz = createAction('UI/updateQuiz')
 export const saveQuizMeta = createAction('UI/saveQuizMeta')
 export const editQuizMeta = createAction('UI/editQuizMeta')
 
-export const saveQuestion = createAction('UI/saveQuestionMeta')
+export const saveQuestion = createAction('UI/saveQuestion')
 export const addQuestion = createAction('UI/addQuestion')
 export const editQuestion = createAction('UI/editQuestion')
 export const deleteQuestion = createAction('UI/deleteQuestion')
@@ -51,7 +51,7 @@ const createNewQuiz = (data = {}) => ({
   score: null,
   url: "https://www.youtube.com/watch?v=e6EGQFJLl04",
 
-  questions_answers: [createNewQuestion()],
+  questions_answers: [],
   ...data
 })
 
@@ -62,13 +62,14 @@ export default createReducer(initialState, {
   [createQuiz]: (state, action) => {
     return {
       action: 'create',
+      editing: 'quizMeta',
       quiz: createNewQuiz()
     }
   },
   [updateQuiz]: (state, { payload: quiz }) => {
     return {
       action: 'update',
-      quiz: {...quiz}
+      quiz: { ...quiz }
     }
   },
   [saveQuizMeta]: (state, { payload }) => {
@@ -76,15 +77,95 @@ export default createReducer(initialState, {
       ...state,
       quiz: {
         ...state.quiz,
-        ...payload 
+        ...payload
       },
-      showQuiz: 'card'
+      editing: ''
     }
   },
   [editQuizMeta]: (state, { payload }) => {
     return {
       ...state,
-      showQuiz: 'form'
+      editing: 'quizMeta'
+    }
+  },
+  [addQuestion]: (state) => {
+    const newQuestion = createNewQuestion()
+    const questions_answers = [...state.quiz.questions_answers, newQuestion]
+
+    return {
+      ...state,
+      quiz: {
+        ...state.quiz,
+        questions_answers
+      },
+      editing: newQuestion.id
+    }
+  },
+  [editQuestion]: (state, { payload: questionId }) => {
+    return {
+      ...state,
+      editing: questionId
+    }
+  },
+  [saveQuestion]: (state, { payload: { question, questionIdx } }) => {
+    const questions_answers = [...state.quiz.questions_answers]
+    questions_answers[questionIdx] = question
+
+    return {
+      ...state,
+      quiz: {
+        ...state.quiz,
+        questions_answers
+      },
+      editing: ''
+    }
+  },
+  [addAnswer]: (state, { payload: questionIdx }) => {
+    const newAnswer = createNewAnswer()
+    const questions_answers = JSON.parse(JSON.stringify([...state.quiz.questions_answers]))
+    questions_answers[questionIdx].answers = [...questions_answers[questionIdx]?.answers, newAnswer]
+
+    return {
+      ...state,
+      quiz: { ...state.quiz, questions_answers }
+    }
+  },
+  [deleteAnswer]: (state, { payload: { questionId, answerId } }) => {
+
+
+    const questions_answers = state.quiz.questions_answers.map(question => {
+      if (question.id !== questionId) return question
+
+      let deletedCorrect = false
+      let answers = question.answers.filter(answer => {
+        if (answer.id === answerId && answer.is_true) deletedCorrect = true
+        return answer.id !== answerId
+      })
+      
+      if (deletedCorrect) answers = answers.map((answer, idx) => (idx === 0 ? {...answer, is_true: true} : answer))
+
+      return { ...question, answers }
+    })
+
+    return {
+      ...state,
+      quiz: { ...state.quiz, questions_answers }
+    }
+  },
+  [markAnswerCorrect]: (state, { payload: { questionId, answerId } }) => {
+
+    const questions_answers = state.quiz.questions_answers.map(question => {
+      if (question.id !== questionId) return question
+
+      return {
+        ...question,
+        answers: question.answers.map(answer => ({ ...answer, is_true: answer.id === answerId }))
+      }
+    })
+
+    return {
+      ...state,
+      quiz: { ...state.quiz, questions_answers }
     }
   },
 
