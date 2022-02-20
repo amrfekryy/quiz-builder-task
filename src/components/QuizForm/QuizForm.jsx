@@ -45,6 +45,7 @@ function QuizForm() {
         <Button
           variant="contained" size="small"
           onClick={handleSubmit}
+          disabled={!values.title}
         >
           Save
         </Button>

@@ -54,8 +54,11 @@ function QuestionCard({ question, questionIdx }) {
       dispatch(UIActions.saveQuestion(payload))
     }
   });
-  console.log('question.answers', question.answers)
-  console.log('values', values)
+
+  const isSubmitDisabled = () => {
+    const { text, feedback_false, feedback_true, ...answersText } = values
+    return !(text && answers.every(answer => answersText[answer.id]))
+  }
 
   return (
     <Paper elevation={0} sx={{ p: 2, m: 2 }}>
@@ -138,9 +141,8 @@ function QuestionCard({ question, questionIdx }) {
       <Stack direction="row" justifyContent="flex-end" mt={2}>
         <Button
           variant="contained" size="small"
-          onClick={() => {
-            handleSubmit();
-          }}
+          onClick={handleSubmit}
+          disabled={isSubmitDisabled()}
         >
           Save
         </Button>
