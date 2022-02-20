@@ -14,8 +14,8 @@ export function AddNew() {
   return (
     <Paper elevation={1}
       sx={{
-        width: 250, m: 2, minHeight: 100, bgcolor: 'transparent',
-        ':hover': { boxShadow: 2 }
+        width: 250, m: 2, minHeight: 100, 
+        ':hover': { boxShadow: 5 }
       }}
       onClick={() => dispatch(UIActions.createQuiz())}
     >

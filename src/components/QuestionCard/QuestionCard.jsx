@@ -51,7 +51,7 @@ export default function QuizCard({ question, questionIdx }) {
         return <Stack direction="row" alignItems="center" spacing={1} sx={{ my: 0.5 }}>
           <MyIcon icon={is_true ? "check_circle" : "radio_button_unchecked"}
             sx={{
-              color: 'success.main', fontSize: 15,
+              color: 'success.main', fontSize: 17,
               ':hover': { color: 'success.main' }
             }}
           />
