@@ -11,7 +11,7 @@ function Main() {
   return (
     <Stack direction="row" justifyContent="center" flexWrap="wrap">
       <AddNew />
-      {Object.values(quizes).map(quiz => <QuizCard mini quiz={quiz}/>)}
+      {Object.values(quizes).map(quiz => <QuizCard key={quiz.id} mini quiz={quiz} />)}
     </Stack>
   )
 }

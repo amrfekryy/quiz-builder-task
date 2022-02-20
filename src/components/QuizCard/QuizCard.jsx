@@ -14,7 +14,7 @@ export function AddNew() {
   return (
     <Paper elevation={1}
       sx={{
-        width: 250, m: 2, minHeight: 100, 
+        width: 250, m: 2, minHeight: 100,
         ':hover': { boxShadow: 5 }
       }}
       onClick={() => dispatch(UIActions.createQuiz())}
@@ -43,9 +43,7 @@ export default function QuizCard({ quiz: Quiz, mini = false }) {
             onClick={() => window.open(url, '_blank').focus()}
           />
           {!editing && <MyIcon icon='edit' tooltip="edit" fontSize="small"
-            onClick={() => {
-              dispatch(Quiz ? UIActions.updateQuiz(Quiz) : UIActions.editQuizMeta())
-            }}
+            onClick={() => dispatch(Quiz ? UIActions.updateQuiz(Quiz) : UIActions.editQuizMeta())}
           />}
         </Stack>
       </Stack>

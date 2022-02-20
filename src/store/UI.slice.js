@@ -141,8 +141,8 @@ export default createReducer(initialState, {
         if (answer.id === answerId && answer.is_true) deletedCorrect = true
         return answer.id !== answerId
       })
-      
-      if (deletedCorrect) answers = answers.map((answer, idx) => (idx === 0 ? {...answer, is_true: true} : answer))
+
+      if (deletedCorrect) answers = answers.map((answer, idx) => (idx === 0 ? { ...answer, is_true: true } : answer))
 
       return { ...question, answers }
     })

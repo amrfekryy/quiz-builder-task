@@ -7,12 +7,9 @@ function MyIcon({ icon, tooltip, sx, ...props }) {
   const _Icon = <Icon
     sx={{
       color: isClickable ? '#808080' : '#404040',
-      // color: 'primary.main',
-      // fontSize: 'medium',
       ':hover': {
         cursor: 'pointer',
         color: '#404040',
-        // color: 'secondary.main'
       },
       ...sx
     }}

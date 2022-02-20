@@ -24,13 +24,12 @@ function Feedbck({ title, feedback }) {
   )
 }
 
-export default function QuizCard({ question, questionIdx }) {
+export default function QuestionCard({ question }) {
 
   const dispatch = useDispatch()
-  const { quiz = {}, editing } = useSelector(state => state.UI)
-  const { questions_answers = [] } = quiz
+  const { editing } = useSelector(state => state.UI)
   const { text, feedback_false, feedback_true, answers = [] } = question
-  console.log('question', question)
+
   return (
     <Paper elevation={0} sx={{ p: 2, m: 2 }}>
 
@@ -39,8 +38,8 @@ export default function QuizCard({ question, questionIdx }) {
           {text}
         </Typography>
         <Stack direction="row" flex={1} justifyContent="flex-end" spacing={1}>
-          {!editing && <MyIcon icon='edit' tooltip="edit" fontSize="small" 
-            onClick={() => dispatch(UIActions.editQuestion(question.id))} 
+          {!editing && <MyIcon icon='edit' tooltip="edit" fontSize="small"
+            onClick={() => dispatch(UIActions.editQuestion(question.id))}
           />}
         </Stack>
       </Stack>
@@ -48,7 +47,7 @@ export default function QuizCard({ question, questionIdx }) {
       {answers.map(answer => {
         const { text, is_true } = answer
 
-        return <Stack direction="row" alignItems="center" spacing={1} sx={{ my: 0.5 }}>
+        return <Stack key={answer.id} direction="row" alignItems="center" spacing={1} sx={{ my: 0.5 }}>
           <MyIcon icon={is_true ? "check_circle" : "radio_button_unchecked"}
             sx={{
               color: 'success.main', fontSize: 17,

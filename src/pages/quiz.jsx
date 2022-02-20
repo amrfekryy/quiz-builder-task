@@ -22,20 +22,19 @@ function Quiz() {
       {editing === 'quizMeta' ? <QuizForm /> : <QuizCard />}
       {questions_answers.map((question, questionIdx) => {
         const Component = editing === question.id ? QuestionForm : QuestionCard
-        return <Component question={question} questionIdx={questionIdx} />
+        return <Component key={question.id} question={question} questionIdx={questionIdx} />
       })}
       <Stack sx={{ m: 2 }}>
-        <Button disabled={editing} onClick={() => dispatch(UIActions.addQuestion())}>
+        <Button disabled={!!editing} onClick={() => dispatch(UIActions.addQuestion())}>
           Add Question
         </Button>
-        <Button disabled={editing} onClick={() => {
+        <Button disabled={!!editing} onClick={() => {
           dispatch(submitQuiz(quiz))
           dispatch(UIActions.resetUI())
         }}>
           Save Quiz
         </Button>
-
-    </Stack>
+      </Stack>
     </>
   )
 }

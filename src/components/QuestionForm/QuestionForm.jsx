@@ -5,12 +5,11 @@ import {
   TextField,
   Button,
   Typography,
-  Checkbox
 } from '@mui/material'
 import { useFormik } from 'formik'
 import AddIcon from '@mui/icons-material/Add';
 import MyIcon from 'components/MyIcon/MyIcon';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import * as UIActions from 'store/UI.slice'
 
 const fields1 = [
@@ -21,25 +20,22 @@ const fields2 = [
   { name: 'feedback_true', label: 'True Answer Feedback', multiline: true },
 ]
 
-function QuestionCard({ question, questionIdx }) {
+function QuestionForm({ question, questionIdx }) {
 
   const dispatch = useDispatch()
-  const { quiz = {} } = useSelector(state => state.UI)
-  const { questions_answers = [] } = quiz
   const { text = "", feedback_false = "", feedback_true = "", answers = [] } = question
-
 
   const { handleChange, handleSubmit, values } = useFormik({
     initialValues: {
       text, feedback_false, feedback_true,
-      ...answers.reduce((res, answer, answerIdx) => {
+      ...answers.reduce((res, answer) => {
         return { ...res, [answer.id]: answer.text }
       }, {})
     },
     onSubmit: values => {
 
       const { text, feedback_false, feedback_true, ...answersText } = values
-      // console.log('answersObj', answersObj)
+
       const payload = {
         questionIdx,
         question: {
@@ -64,8 +60,9 @@ function QuestionCard({ question, questionIdx }) {
     <Paper elevation={0} sx={{ p: 2, m: 2 }}>
       <Stack spacing={2}>
         {
-          fields1.map(field => {
+          fields1.map((field, idx) => {
             return <TextField
+              key={idx}
               variant="outlined"
               size="small"
               {...field}
@@ -97,16 +94,13 @@ function QuestionCard({ question, questionIdx }) {
                 />
                 <MyIcon tooltip="mark as correct"
                   icon={answer.is_true ? "check_circle" : "radio_button_unchecked"}
-                  sx={{
-                    color: 'success.main', fontSize: 20,
-                    // ':hover': { color: 'success.main' }
-                  }}
-                  onClick={() => dispatch(UIActions.markAnswerCorrect({ 
+                  sx={{ color: 'success.main', fontSize: 20 }}
+                  onClick={() => dispatch(UIActions.markAnswerCorrect({
                     questionId: question.id, answerId: answer.id
                   }))}
                 />
                 {answers.length > 2 && <MyIcon icon="close" tooltip="delete" sx={{ fontSize: 20 }}
-                  onClick={() => dispatch(UIActions.deleteAnswer({ 
+                  onClick={() => dispatch(UIActions.deleteAnswer({
                     questionId: question.id, answerId: answer.id
                   }))}
                 />}
@@ -127,8 +121,9 @@ function QuestionCard({ question, questionIdx }) {
       </Stack>
       <Stack spacing={2} sx={{ mt: 3 }}>
         {
-          fields2.map(field => {
+          fields2.map((field, idx) => {
             return <TextField
+              key={idx}
               variant="outlined"
               size="small"
               {...field}
@@ -151,4 +146,4 @@ function QuestionCard({ question, questionIdx }) {
   )
 }
 
-export default QuestionCard
+export default QuestionForm

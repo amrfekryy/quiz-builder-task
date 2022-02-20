@@ -19,7 +19,7 @@ function QuizForm() {
 
   const dispatch = useDispatch()
   const { quiz = {} } = useSelector(state => state.UI)
-  const { title='', description='', url='' } = quiz
+  const { title = '', description = '', url = '' } = quiz
 
   const { handleChange, handleSubmit, values } = useFormik({
     initialValues: { title, description, url },
@@ -30,8 +30,9 @@ function QuizForm() {
     <Paper elevation={0} sx={{ p: 2, m: 2 }}>
       <Stack spacing={2}>
         {
-          fields.map(field => {
+          fields.map((field, idx) => {
             return <TextField
+              key={idx}
               variant="outlined"
               size="small"
               {...field}
